@@ -1,0 +1,21 @@
+[project]
+name = "doc-chunker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Soumya Sinha", email = "soumya.sinha98@gmail.com" }
+]
+requires-python = ">=3.15"
+dependencies = [
+    "pydantic>=2.14.3",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
+
+[project.scripts]
+doc-chunker = "doc_chunker:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
