@@ -92,7 +92,9 @@ def test_chunk_sections_labels_and_indexes():
     assert [c.index for c in chunks] == list(range(len(chunks)))
     assert {c.source for c in chunks} == {"docs/f.md"}
     assert chunks[0].section == "A"
-    assert chunks[-1] == Chunk(text="short", source="docs/f.md", section="B", index=len(chunks) - 1)
+    assert chunks[-1] == Chunk(
+        text="short", source="docs/f.md", section="B", index=len(chunks) - 1
+    )
 
 
 def test_chunk_sections_with_no_sections():

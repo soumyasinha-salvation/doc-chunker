@@ -15,8 +15,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Turn Markdown, HTML and PDF files into JSONL chunks.",
     )
     parser.add_argument("path", help="a file, or a folder to walk recursively")
-    parser.add_argument("--size", type=int, default=500, help="max characters per chunk")
-    parser.add_argument("--overlap", type=int, default=50, help="characters shared between chunks")
+    parser.add_argument(
+        "--size", type=int, default=500, help="max characters per chunk"
+    )
+    parser.add_argument(
+        "--overlap", type=int, default=50, help="characters shared between chunks"
+    )
     parser.add_argument("--out", help="output .jsonl file (default: stdout)")
     return parser
 

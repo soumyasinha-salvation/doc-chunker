@@ -55,7 +55,9 @@ def test_markdown_empty_section_is_dropped(md_sections):
 
 
 def test_markdown_without_headings():
-    assert read_markdown("just text\n\nmore text") == [Section("", "just text\n\nmore text")]
+    assert read_markdown("just text\n\nmore text") == [
+        Section("", "just text\n\nmore text")
+    ]
 
 
 # --- HTML --------------------------------------------------------------------
@@ -76,7 +78,9 @@ def test_html_sections(html_sections):
     ]
 
 
-@pytest.mark.parametrize("noise", ["Site header", "Home", "Copyright", "tracking", "color"])
+@pytest.mark.parametrize(
+    "noise", ["Site header", "Home", "Copyright", "tracking", "color"]
+)
 def test_html_noise_is_removed(html_sections, noise):
     assert all(noise not in s.text for s in html_sections)
 
