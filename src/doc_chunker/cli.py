@@ -19,7 +19,10 @@ def write_chunks(files: list[Path], out: TextIO, size: int, overlap: int) -> Non
         if file.suffix.lower() not in SUPPORTED_SUFFIXES:
             print(f"warning: skipping unsupported file {file}", file=sys.stderr)
             continue
-        out.writelines(json.dumps(chunk.to_dict()) + "\n" for chunk in chunk_sections(read_file(file), str(file), size, overlap))
+        out.writelines(
+            json.dumps(chunk.to_dict()) + "\n"
+            for chunk in chunk_sections(read_file(file), str(file), size, overlap)
+        )
 
 
 def build_parser() -> argparse.ArgumentParser:
