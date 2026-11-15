@@ -60,5 +60,14 @@ def chunk_sections(
       - `index` counts chunks across the whole file: 0, 1, 2, ... (it does NOT restart
         per section).
     """
-    # TODO
-    raise NotImplementedError("TODO: implement chunk_sections")
+    chunk_index = 0
+
+    for section in sections:
+        for piece in split_text(section.text, size, overlap):
+            yield Chunk(
+                text=piece,
+                source=source,
+                section=section.heading,
+                index=chunk_index,
+            )
+            chunk_index += 1
