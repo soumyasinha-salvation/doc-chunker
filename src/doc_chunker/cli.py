@@ -7,9 +7,19 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import TextIO
 
 from doc_chunker.readers import SUPPORTED_SUFFIXES, read_file
 from doc_chunker.splitter import chunk_sections, split_text
+
+
+def write_chunks(files: list[Path], out: TextIO, size: int, overlap: int) -> None:
+    """Write every chunk of every supported file to `out`, one JSON object per line."""
+    for file in files:
+        if file.suffix.lower() not in SUPPORTED_SUFFIXES:
+            print(f"warning: skipping unsupported file {file}", file=sys.stderr)
+            continue
+        out.writelines(json.dumps(chunk.to_dict()) + "\n" for chunk in chunk_sections(read_file(file), str(file), size, overlap))
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -52,22 +62,13 @@ def main(argv: list[str] | None = None) -> int:
         files = [root]
 
     # 4. Where to write?
-    out = open(args.out, "w", encoding="utf-8") if args.out else sys.stdout
-    try:
-        # 5. Process each file
-        for file in files:
-            if file.suffix.lower() not in SUPPORTED_SUFFIXES:
-                print(f"warning: skipping unsupported file {file}", file=sys.stderr)
-                continue
-            for chunk in chunk_sections(
-                read_file(file), str(file), args.size, args.overlap
-            ):
-                out.write(json.dumps(chunk.to_dict()) + "\n")
-    finally:
-        if out is not sys.stdout:
-            out.close()
+    # 4. Write to a file (closed automatically) or to the terminal
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as out:
+            write_chunks(files, out, args.size, args.overlap)
+    else:
+        write_chunks(files, sys.stdout, args.size, args.overlap)
 
-    # 6. Success
     return 0
 
 
