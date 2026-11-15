@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from itertools import pairwise
 
 import pytest
 
@@ -52,7 +53,7 @@ def test_no_piece_exceeds_size(size, overlap):
 @pytest.mark.parametrize(("size", "overlap"), [(50, 10), (120, 30)])
 def test_consecutive_pieces_share_exact_overlap(size, overlap):
     pieces = split_text(WORDS, size, overlap)
-    for a, b in zip(pieces, pieces[1:], strict=False):
+    for a, b in pairwise(pieces):
         assert a[-overlap:] == b[:overlap]
 
 
